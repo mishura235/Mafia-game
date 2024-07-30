@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.mafia.screens.MainFragment"
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_newRoomFragment"
+            app:destination="@id/newRoomFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_connectToRoomFragment"
+            app:destination="@id/connectToRoomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newRoomFragment"
+        android:name="com.example.mafia.screens.NewRoomFragment"
+        android:label="fragment_new_room"
+        tools:layout="@layout/fragment_new_room" />
+    <fragment
+        android:id="@+id/connectToRoomFragment"
+        android:name="com.example.mafia.screens.ConnectToRoomFragment"
+        android:label="fragment_connect_to_room"
+        tools:layout="@layout/fragment_connect_to_room" />
+</navigation>
