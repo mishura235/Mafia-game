@@ -15,19 +15,18 @@ class NewRoomViewModel : ViewModel() {
     val isRoomCreated: LiveData<Boolean>
         get()= _isRoomCreated
 
-    val clickCreate: View.OnClickListener = View.OnClickListener { createRoom() }
+    val clickCreate: View.OnClickListener
+        get() = View.OnClickListener { createRoom() }
 
-    val clickStart: View.OnClickListener = View.OnClickListener {startGame() }
-
+    val clickStart: View.OnClickListener
+        get() = View.OnClickListener {startGame() }
 
     private val _playersCount = MutableLiveData<Int>(1)
     private val _isRoomCreated = MutableLiveData<Boolean>(false)
 
     private fun createRoom(){
-        Log.d("ssssss",_isRoomCreated.value.toString())
-        _isRoomCreated.value = !_isRoomCreated.value!!
-        Log.d("ssssss",_isRoomCreated.value.toString())
-        _playersCount.value = _playersCount.value!! + 1
+
+
     }
     private fun startGame(){
 
