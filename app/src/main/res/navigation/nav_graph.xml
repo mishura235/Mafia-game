@@ -19,10 +19,22 @@
         android:id="@+id/newRoomFragment"
         android:name="com.example.mafia.screens.NewRoomFragment"
         android:label="fragment_new_room"
-        tools:layout="@layout/fragment_new_room" />
+        tools:layout="@layout/fragment_new_room" >
+        <action
+            android:id="@+id/action_newRoomFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
     <fragment
         android:id="@+id/connectToRoomFragment"
         android:name="com.example.mafia.screens.ConnectToRoomFragment"
         android:label="fragment_connect_to_room"
-        tools:layout="@layout/fragment_connect_to_room" />
+        tools:layout="@layout/fragment_connect_to_room" >
+        <action
+            android:id="@+id/action_connectToRoomFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.mafia.screens.GameFragment"
+        android:label="GameFragment" />
 </navigation>

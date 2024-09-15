@@ -42,6 +42,7 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorCli
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp" }
 ktor-client-websockets = { module = "io.ktor:ktor-client-websockets", version.ref = "ktorClientAndroidVersion" }
 ktor-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientOkhttp" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClientAndroidVersion" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktorServerCore" }
 ktor-server-core-v164 = { module = "io.ktor:ktor-server-core", version.ref = "ktorKtorServerCore" }
 ktor-server-core-v2312 = { module = "io.ktor:ktor-server-core", version.ref = "ktorServerCoreVersion" }

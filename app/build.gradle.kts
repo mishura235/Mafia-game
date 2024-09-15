@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt") version "2.0.0"
-
+    kotlin("plugin.serialization") version "2.0.0"
 }
 
 android {
@@ -52,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.websockets)
     implementation (libs.ktor.server.netty)
     implementation (libs.ktor.server.core)

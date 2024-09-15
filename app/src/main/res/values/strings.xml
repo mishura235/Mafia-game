@@ -10,4 +10,6 @@
     <string name="create_room">CREATE ROOM</string>
     <string name="start_game">START GAME</string>
     <string name="players_count">Players count: %1$s</string>
+    <string name="room_ip">Room IP: %1$s</string>
+    <string name="send">SEND</string>
 </resources>

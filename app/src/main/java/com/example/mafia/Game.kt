@@ -1,9 +1,20 @@
 package com.example.mafia
 
-object Game {
+import kotlinx.serialization.Serializable
+
+class Game() {
 
 
-    fun start(){
+    val chat: MutableList<GameMessage> = mutableListOf()
+
+    fun start() {
 
     }
 }
+
+@Serializable
+data class GameMessage(
+    val text: String,
+    val sender: String,
+    val hidden: Boolean
+)
