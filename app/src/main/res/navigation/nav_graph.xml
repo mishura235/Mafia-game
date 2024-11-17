@@ -36,5 +36,7 @@
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.example.mafia.screens.GameFragment"
-        android:label="GameFragment" />
+        android:label="GameFragment" >
+
+    </fragment>
 </navigation>

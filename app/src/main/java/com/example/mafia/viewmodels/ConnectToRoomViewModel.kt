@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.mafia.R
 import com.example.mafia.network.GameClient
-import io.ktor.client.statement.HttpResponse
+import com.example.mafia.network.GameNetworking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,17 +28,18 @@ class ConnectToRoomViewModel(val navController: NavController) : ViewModel() {
     private val _roomIP: MutableLiveData<String> = MutableLiveData<String>()
     val roomIP: MutableLiveData<String>
         get() = _roomIP
-
+    val client = GameClient()
 
     fun connectToRoom() {
-        val data = MutableLiveData<HttpResponse>()
+        val data = MutableLiveData<String>()
         viewModelScope.launch {
-            val temp = GameClient.connectToRoom(roomIP.value.toString())
+            val temp = client.connect(roomIP.value.toString(),username.value.toString())
             withContext(Dispatchers.Main) {
-                data.value = temp
+                data.value = temp.toString()
             }
         }.invokeOnCompletion {
             Log.d("aaaa", data.value.toString())
+            GameNetworking.networkCore=client
             navController.navigate(R.id.action_connectToRoomFragment_to_gameFragment)
         }
     }

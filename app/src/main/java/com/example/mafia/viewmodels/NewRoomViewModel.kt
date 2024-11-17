@@ -5,15 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.example.mafia.Game
 import com.example.mafia.R
+import com.example.mafia.game.Game
+import com.example.mafia.network.GameNetworking
 import com.example.mafia.network.GameServer
-import com.example.mafia.screens.NewRoomFragment
 
 
 class NewRoomViewModel(private val navController: NavController) : ViewModel() {
@@ -42,14 +38,16 @@ class NewRoomViewModel(private val navController: NavController) : ViewModel() {
         get() = View.OnClickListener { startGame() }
     private val _playersCount = MutableLiveData<Int>(1)
     private val _isRoomCreated = MutableLiveData<Boolean>(false)
-    private val server = GameServer(Game())
+    private val server = GameServer()
     private fun createRoom() {
         _isRoomCreated.value = true
-        server.startRoomServer()
+        server.startServer()
 
     }
 
     private fun startGame() {
+        server.startGame()
+        GameNetworking.networkCore=server
         navController.navigate(R.id.action_newRoomFragment_to_gameFragment)
     }
 
