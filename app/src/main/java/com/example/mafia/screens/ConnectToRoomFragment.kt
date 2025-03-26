@@ -16,7 +16,7 @@ import com.example.mafia.viewmodels.ConnectToRoomViewModel
 class ConnectToRoomFragment : Fragment(R.layout.fragment_connect_to_room) {
 
     private val viewModel: ConnectToRoomViewModel by viewModels{ConnectToRoomViewModel.ConnectToRoomViewModelFactory(navController)}
-    val navController: NavController by lazy {findNavController()}
+    private val navController: NavController by lazy {findNavController()}
 
     override fun onCreateView(
         inflater: LayoutInflater,

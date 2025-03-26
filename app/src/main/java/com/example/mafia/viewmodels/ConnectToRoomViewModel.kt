@@ -5,10 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.example.mafia.R
 import com.example.mafia.network.GameClient
 import com.example.mafia.network.GameNetworking
+import com.example.mafia.network.Player
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,19 +31,12 @@ class ConnectToRoomViewModel(val navController: NavController) : ViewModel() {
     private val _roomIP: MutableLiveData<String> = MutableLiveData<String>()
     val roomIP: MutableLiveData<String>
         get() = _roomIP
-    val client = GameClient()
+    val client = GameClient(viewModelScope)
 
     fun connectToRoom() {
-        val data = MutableLiveData<String>()
-        viewModelScope.launch {
-            val temp = client.connect(roomIP.value.toString(),username.value.toString())
-            withContext(Dispatchers.Main) {
-                data.value = temp.toString()
-            }
-        }.invokeOnCompletion {
-            Log.d("aaaa", data.value.toString())
-            GameNetworking.networkCore=client
-            navController.navigate(R.id.action_connectToRoomFragment_to_gameFragment)
-        }
+        client.connect(roomIP.value.toString(),username.value.toString())
+        GameNetworking.setNetworkCore(client)
+        navController.navigate(R.id.action_connectToRoomFragment_to_gameFragment)
+
     }
 }
