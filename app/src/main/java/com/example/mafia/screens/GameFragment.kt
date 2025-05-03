@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mafia.R
-import com.example.mafia.databinding.FragmentConnectToRoomBinding
 import com.example.mafia.databinding.FragmentGameBinding
 import com.example.mafia.game.ActionDialog
-import com.example.mafia.network.GameMessage
+import com.example.mafia.game.GameEvent
+import com.example.mafia.game.WinDialog
 import com.example.mafia.network.GameNetworking
 import com.example.mafia.network.Player
 import com.example.mafia.recyclerview.ChatAdapter
@@ -54,15 +54,22 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sendMessage = view.findViewById(R.id.sendMessage)
         messageText = view.findViewById(R.id.messageText)
-        val playersAdapter = PlayersAdapter(::createDialog)
+        val playersAdapter = PlayersAdapter(::createActionDialog)
         val chatAdapter = ChatAdapter()
         val rcViewPlayers:RecyclerView = view.findViewById(R.id.recyclerViewPlayers)
         val rcViewChat:RecyclerView = view.findViewById(R.id.recyclerViewChat)
         rcViewChat.adapter=chatAdapter
         rcViewPlayers.adapter = playersAdapter
         sendMessage.setOnClickListener{
-            GameNetworking.sendMessage(messageText.text.toString())
-        }
+            when(viewModel.isServer()){
+                true -> {
+                    viewModel.startGame()
+                    sendMessage.text = resources.getString(R.string.send)
+                    sendMessage.setOnClickListener { viewModel.sendMessage(messageText.text.toString()) }
+                }
+                false -> viewModel.sendMessage(messageText.text.toString())
+                }
+            }
         CoroutineScope(Dispatchers.Main).launch{
             GameNetworking.chat.collect{
                 chatAdapter.changeMessages(it)
@@ -73,9 +80,25 @@ class GameFragment : Fragment() {
                 playersAdapter.changePlayers(it)
             }
         }
+        CoroutineScope(Dispatchers.Main).launch{
+            GameNetworking.lastChangeTimeEvent.collect{
+                when(it){
+                    is GameEvent.CivilianWinner -> createCivilianWinDialog()
+                    is GameEvent.MafiaWinner -> createMafiaWinDialog()
+                    else ->{}
+                }
+            }
+        }
     }
-    private fun createDialog(player: Player){
+    private fun createActionDialog(player: Player){
         ActionDialog(player,viewModel::confirmVote).show(childFragmentManager,"ConfirmDialog")
     }
 
+    private fun createMafiaWinDialog(){
+        WinDialog("MAFIA WIN").show(childFragmentManager,"MafiaWinDialog")
+    }
+
+    private fun createCivilianWinDialog(){
+        WinDialog("CIVILIAN WIN").show(childFragmentManager,"CivilianWinDialog")
+    }
 }

@@ -12,7 +12,9 @@ class GameViewModel : ViewModel() {
     fun confirmVote(victim: Player) {
         GameNetworking.confirmVote(victim)
     }
-
+    fun sendMessage(message:String){
+        GameNetworking.sendMessage(message)
+    }
     val _timer = MutableLiveData("00:00")
     val timer :MutableLiveData<String>
         get() = _timer
@@ -24,6 +26,10 @@ class GameViewModel : ViewModel() {
             }
         }
     }
+    fun isServer():Boolean = GameNetworking.isServer()
 
+    fun startGame() {
+        GameNetworking.startGame()
+    }
 
 }

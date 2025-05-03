@@ -37,7 +37,7 @@ class GameClient(val scope: CoroutineScope) : GameClientInterface{
         println("CoroutineExceptionHandler got $exception in $context")
     }
     override val chat: MutableStateFlow<MutableList<GameMessage>> = MutableStateFlow(mutableListOf())
-    override val lastChangeTimeEvent: MutableStateFlow<GameEvent.ServerGameEvent> = MutableStateFlow(GameEvent.DayGameEvent())
+    override val lastChangeTimeEvent: MutableStateFlow<GameEvent.ServerGameEvent> = MutableStateFlow(GameEvent.StartGameEvent())
     lateinit var session: DefaultClientWebSocketSession
     override val time = MutableStateFlow("00:00")
     val timer = GameTimer()
@@ -86,6 +86,8 @@ class GameClient(val scope: CoroutineScope) : GameClientInterface{
             }
         }
     }
+
+    override fun isServer(): Boolean = false
 
     override fun connect(host: String, username: String) {
         player.update {Player(username)}
@@ -136,7 +138,11 @@ class GameClient(val scope: CoroutineScope) : GameClientInterface{
             is GameEvent.TimerSyncGameEvent ->{
                 timer.gameTime.update { event.time }
             }
-            else -> {}
+
+            is GameEvent.KillClientGameEvent -> {}
+            is GameEvent.ProsecutionClientGameEvent -> {}
+            is GameEvent.CivilianWinner -> {lastChangeTimeEvent.update { event }}
+            is GameEvent.MafiaWinner -> {lastChangeTimeEvent.update { event }}
         }
     }
 

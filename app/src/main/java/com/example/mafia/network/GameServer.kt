@@ -34,7 +34,7 @@ class GameServer(val scope: CoroutineScope) : GameServerInterface {
     override var player = MutableStateFlow(Player(""))
     override val time: MutableStateFlow<String> = MutableStateFlow<String>("00:00")
     override val chat = MutableStateFlow(mutableListOf<GameMessage>())
-    override val lastChangeTimeEvent: MutableStateFlow<GameEvent.ServerGameEvent> = MutableStateFlow(GameEvent.DayGameEvent())
+    override val lastChangeTimeEvent: MutableStateFlow<GameEvent.ServerGameEvent> = MutableStateFlow(GameEvent.StartGameEvent())
     override val players:MutableStateFlow<MutableList<Player>> = MutableStateFlow(mutableListOf())
     val game = Game(chat,players)
     init {
@@ -67,8 +67,6 @@ class GameServer(val scope: CoroutineScope) : GameServerInterface {
                         withContext(Dispatchers.IO){
                             game.gameStream.collect{ gameEvent ->
                                 when(gameEvent){
-                                    is GameEvent.KillClientGameEvent -> sendSerialized<Message>(GameEventMessage(gameEvent))
-                                    is GameEvent.ProsecutionClientGameEvent -> sendSerialized<Message>(GameEventMessage(gameEvent))
                                     is GameEvent.DayGameEvent -> {
                                         sendSerialized<Message>(GameEventMessage(gameEvent))
                                         lastChangeTimeEvent.update{ gameEvent }
@@ -77,8 +75,15 @@ class GameServer(val scope: CoroutineScope) : GameServerInterface {
                                         sendSerialized<Message>(GameEventMessage(gameEvent))
                                         lastChangeTimeEvent.update{ gameEvent}
                                     }
-                                    is GameEvent.StartGameEvent -> sendSerialized<Message>(GameEventMessage(gameEvent))
-                                    is GameEvent.TimerSyncGameEvent -> sendSerialized<Message>(GameEventMessage(gameEvent))
+                                    is GameEvent.MafiaWinner ->{
+                                        sendSerialized<Message>(GameEventMessage(gameEvent))
+                                        lastChangeTimeEvent.update { gameEvent }
+                                    }
+                                    is GameEvent.CivilianWinner->{
+                                        sendSerialized<Message>(GameEventMessage(gameEvent))
+                                        lastChangeTimeEvent.update { gameEvent }
+                                    }
+                                    else -> sendSerialized<Message>(GameEventMessage(gameEvent))
                                 }
                             }
                         }
@@ -103,10 +108,10 @@ class GameServer(val scope: CoroutineScope) : GameServerInterface {
 
                     while (true){
                         val message = receiveDeserialized<Message>()
-//                        val clientPlayer = players.value.find { it.id==clientPlayerId } ?: Player("")
-//                        if (clientPlayer.isAlive) {
+                        val clientPlayer = players.value.find { it.id==clientPlayerId } ?: Player("")
+                        if (clientPlayer.isAlive) {
                             messageHandler(message, this, { clientPlayerId = it })
-//                        }
+                        }
                     }
                 }
 
@@ -141,8 +146,7 @@ class GameServer(val scope: CoroutineScope) : GameServerInterface {
         is GameEvent.ProsecutionClientGameEvent -> game.gameStream.update { event }
         is GameEvent.DayGameEvent -> lastChangeTimeEvent.update { event }
         is GameEvent.NightGameEvent -> lastChangeTimeEvent.update { event }
-        is GameEvent.StartGameEvent -> TODO()
-        is GameEvent.TimerSyncGameEvent -> TODO()
+        else -> {}
     }
     }
 
@@ -161,6 +165,8 @@ class GameServer(val scope: CoroutineScope) : GameServerInterface {
             }
         }
     }
+
+    override fun isServer(): Boolean = true
 
     override fun startServer() {
         server.start()

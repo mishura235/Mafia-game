@@ -39,6 +39,8 @@ class PlayersAdapter(val createDialog: (Player)->Unit): RecyclerView.Adapter<Pla
         holder.playerNick.text = players[position].nick
         holder.playerIcon.setImageResource(if (players[position].isAlive) R.drawable.account_cowboy_hat else R.drawable.ic_launcher_foreground)
         holder.playerIcon.setOnClickListener {
+            if (players[position]==GameNetworking.player.value)
+                return@setOnClickListener
             Log.d( "onBindViewHolder: ",GameNetworking.player.value.toString()+GameNetworking.lastChangeTimeEvent.value.toString()+players[position])
             if (GameNetworking.lastChangeTimeEvent.value is GameEvent.DayGameEvent &&
                 GameNetworking.player.value.role == Player.Roles.CIVILIAN){

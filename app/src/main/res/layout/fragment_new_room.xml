@@ -21,26 +21,12 @@
             android:layout_marginEnd="16dp"
             android:text="@={viewModel.nickname}"
             android:hint="@string/enter_username"
-            app:layout_constraintBottom_toTopOf="@+id/players_count"
+            app:layout_constraintBottom_toTopOf="@+id/room_ip"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.87" />
-
-        <TextView
-            android:id="@+id/players_count"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="39dp"
-            android:text="@{@string/players_count(viewModel.playersCount)}"
-            android:textSize="16sp"
-
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/room_ip"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/room_ip"
@@ -64,8 +50,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="260dp"
-            android:onClick="@{viewModel.isRoomCreated ? viewModel.clickStart : viewModel.clickCreate }"
-            android:text="@{viewModel.isRoomCreated ? @string/start_game : @string/create_room }"
+            android:onClick="@{viewModel.clickCreate }"
+            android:text="@{@string/create_room }"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

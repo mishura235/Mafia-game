@@ -12,6 +12,7 @@ interface NetworkInterface{
     val lastChangeTimeEvent:MutableStateFlow<GameEvent.ServerGameEvent>
     fun sendMessage(message: String)
     fun confirmVote(victim: Player)
+    fun isServer(): Boolean
 }
 interface GameClientInterface : NetworkInterface {
     fun connect(host:String,username:String)

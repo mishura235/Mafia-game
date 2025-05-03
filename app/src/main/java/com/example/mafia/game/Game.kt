@@ -95,7 +95,7 @@ class Game(
     }
 
     private fun checkWinner() {
-        if(players.value.filter{ it.role==Player.Roles.CIVILIAN&&it.isAlive }.size==1){
+        if(players.value.filter{ it.role==Player.Roles.CIVILIAN&&it.isAlive }.size<=1){
             gameStream.update { GameEvent.MafiaWinner() }
             chat.update { (it+GameMessage("Мафия выиграла",godPlayer,false)).toMutableList() }
         } else if (players.value.none { it.role == Player.Roles.MAFIA && it.isAlive }){

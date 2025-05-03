@@ -3,11 +3,11 @@
   <component name="deploymentTargetSelector">
     <selectionStates>
       <SelectionState runConfigName="app">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-03-09T13:02:08.538092685Z">
+        <option name="selectionMode" value="DIALOG" />
+        <DropdownSelection timestamp="2025-05-01T19:07:31.166135232Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="Default" identifier="serial=&lt;unknown&gt;;connection=77291e6e" />
+              <DeviceId pluginId="Default" identifier="serial=&lt;unknown&gt;;connection=011c44eb" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -15,12 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="PhysicalDevice" identifier="serial=136e58f6" />
+                <DeviceId pluginId="Default" identifier="serial=&lt;unknown&gt;;connection=aded7c62" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="Default" identifier="serial=&lt;unknown&gt;;connection=2741f34a" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=/home/mishura/.var/app/com.google.AndroidStudio/config/.android/avd/Medium_Phone.avd" />
               </handle>
             </Target>
           </targets>

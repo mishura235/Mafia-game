@@ -22,8 +22,14 @@ object GameNetworking:NetworkInterface {
     override fun sendMessage(message: String){
         _networkCore.sendMessage(message)
     }
-
     override fun confirmVote(victim: Player) {
         _networkCore.confirmVote(victim)
     }
+    override fun isServer():Boolean = _networkCore.isServer()
+    fun startGame() {
+        if (isServer()){
+            (_networkCore as? GameServer)?.startGame()
+        }
+    }
+
 }
